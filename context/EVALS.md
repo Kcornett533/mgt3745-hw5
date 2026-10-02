@@ -1,21 +1,15 @@
 # EVALS.md
 
-The verification table from HW3, grown up. Five sections, in this order.
-The first two are written and committed BEFORE any tool sees the spec.
-
 ## 1. RAT statement
-<!-- One sentence. The assumption that, if false, makes this build pointless,
-     and what would show it is false. -->
-The riskiest assumption in delegating <feature> is that ...
+The riskiest assumption in delegating Search & Filter to bolt.new is that it will implement client-side DOM filtering cleanly using safe `textContent` methods rather than introducing unsafe `innerHTML` re-rendering or direct DOM mutations.
 
-## 2. Prediction Stake (before build, <date and time>)
-<!-- At least one of each. Never edit the prediction text; add resolutions below it. -->
-- **Tight:** At least _ of _ EARS rows will pass on the tool's first output.
-  - Resolved <date>: _ of _.
-- **Loose:** bolt will follow STYLE.md tokens better than AI Studio.
-  - Resolved <date>: ...
-- **Open:** The tool will introduce a dependency I did not ask for. Resolves when I read package.json.
-  - Resolved <date>: ...
+## 2. Prediction Stake (before build, October 1, 2026 8:00 PM)
+- **Tight:** At least 3 of 4 EARS rows will pass on the tool's first output.
+  - Resolved October 1, 2026: _ of 4.
+- **Loose:** bolt will follow STYLE.md tokens (colors and fonts) better than AI Studio.
+  - Resolved October 1, 2026: Pending comparison.
+- **Open:** The tool will introduce a dependency or attempt to create a parallel state array. Resolves when inspecting app.js diff.
+  - Resolved October 1, 2026: Pending inspection.
 
 ## 3. Success criteria
 | EARS row (feature) | Checked by | Where |
