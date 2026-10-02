@@ -14,6 +14,9 @@ errors; never throw to the console.
 ## Delegation guidance: what to paste, what to check first
 **Paste, in order:** PROJECT, FEATURES (rows marked), STYLE, STANDARDS, TOOLS, then the current page files. One instruction line naming the files it may touch.
 **Check first:** the diff's file list, then innerHTML / concatenated SQL, then whether it used the tokens.
-**Reliably wrong (this week):** *fill from your error-analysis log*
+**Reliably wrong (this week):** Omitting payload parameters required by API schema validation (e.g., `executionParams`).
 
-## <your entry>
+## Pattern: Safe DOM rendering without innerHTML
+**When:** displaying dynamic provenance records or status messages in the UI.
+**Do:** create elements via `document.createElement()`, assign text content using `.textContent`, and append nodes directly to container elements.
+**Because:** prevents cross-site scripting (XSS) vulnerabilities and strictly enforces repository security standards (CLAUDE.md).
