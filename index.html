@@ -1,26 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Entries</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Provenance Logger</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main>
-    <h1>Entries</h1>
-    <p class="lede">Replace this heading and copy with your HW3 feature. Structure lives here; presentation in styles.css; behavior and data in app.js.</p>
+  <div class="container">
+    <header>
+      <h1>Data Provenance Manifest</h1>
+      <p>Log and verify dataset execution metadata securely</p>
+    </header>
 
-    <form id="entry-form">
-      <label for="entry-text">New entry</label>
-      <input id="entry-text" name="text" type="text" autocomplete="off" required>
-      <button type="submit">Save</button>
-    </form>
+    <main>
+      <section class="card">
+        <h2>Log New Provenance Entry</h2>
+        <form id="manifestForm">
+          <div class="form-group">
+            <label for="pipelineName">Pipeline Name</label>
+            <input type="text" id="pipelineName" required placeholder="e.g. RNA-Seq Alignment v2">
+          </div>
+          <div class="form-group">
+            <label for="executionParams">Execution Parameters</label>
+            <input type="text" id="executionParams" required placeholder="e.g. --threads 8 --mem 16GB">
+          </div>
+          <div class="form-group">
+            <label for="fileSignature">SHA-256 File Signature (64 Hex Characters)</label>
+            <input type="text" id="fileSignature" required placeholder="64-character hexadecimal SHA-256 hash">
+          </div>
+          <div class="form-group">
+            <label for="notes">Notes (Optional)</label>
+            <textarea id="notes" rows="3" placeholder="Additional execution details..."></textarea>
+          </div>
+          <button type="submit" id="submitBtn">Save Entry</button>
+        </form>
+        <div id="statusBadge" class="status-badge" style="display: none;"></div>
+      </section>
 
-    <p id="status" class="status" role="status" aria-live="polite"></p>
-
-    <ul id="entry-list" aria-label="Saved entries"></ul>
-  </main>
+      <section class="entries-section">
+        <div class="entries-header">
+          <h2>Provenance Records</h2>
+          <div class="search-filter-controls">
+            <input type="text" id="searchInput" placeholder="Search pipeline or notes..." class="search-box">
+            <select id="filterSelect" class="filter-dropdown">
+              <option value="all">All Entries</option>
+              <option value="has-notes">Has Notes</option>
+              <option value="no-notes">No Notes</option>
+            </select>
+          </div>
+        </div>
+        <div id="entriesContainer" class="entries-list"></div>
+      </section>
+    </main>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>

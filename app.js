@@ -4,9 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("manifestForm");
   const entriesContainer = document.getElementById("entriesContainer");
   const statusBadge = document.getElementById("statusBadge");
+  const searchInput = document.getElementById("searchInput");
+  const filterSelect = document.getElementById("filterSelect");
 
-  // Load initial entries from Cloudflare D1
+  let allEntries = [];
+
   fetchEntries();
+
+  if (searchInput) searchInput.addEventListener("input", filterAndRender);
+  if (filterSelect) filterSelect.addEventListener("change", filterAndRender);
 
   if (form) {
     form.addEventListener("submit", async (e) => {
@@ -17,19 +23,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const fileSignature = document.getElementById("fileSignature").value.trim();
       const notes = document.getElementById("notes").value.trim();
 
-      // Client-side EARS 64-char hex validation rule
       const hex64Regex = /^[a-fA-F0-9]{64}$/;
       if (!hex64Regex.test(fileSignature)) {
         showStatus("Error: File signature must be a valid 64-character hexadecimal SHA-256 string.", true);
         return;
       }
 
-      const payload = {
-        pipelineName,
-        executionParams,
-        fileSignature,
-        notes
-      };
+      const payload = { pipelineName, executionParams, fileSignature, notes };
 
       try {
         showStatus("Saving entry to Cloudflare D1...", false);
@@ -57,21 +57,45 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch(`${API}/entries`);
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-      const data = await res.json();
-      renderEntries(data);
+      allEntries = await res.json();
+      filterAndRender();
     } catch (err) {
       showStatus(`Error loading records: ${err.message}`, true);
     }
   }
 
-  function renderEntries(entries) {
-    if (!entriesContainer) return;
-    entriesContainer.textContent = ""; // Clear existing elements safely
+  function filterAndRender() {
+    if (!Array.isArray(allEntries)) return;
 
-    if (!Array.isArray(entries) || entries.length === 0) {
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    const filter = filterSelect ? filterSelect.value : "all";
+
+    const filtered = allEntries.filter((entry) => {
+      const name = (entry.pipelineName || "").toLowerCase();
+      const notes = (entry.notes || "").toLowerCase();
+
+      const matchesSearch = name.includes(query) || notes.includes(query);
+
+      let matchesFilter = true;
+      if (filter === "has-notes") matchesFilter = Boolean(entry.notes && entry.notes.trim() !== "");
+      if (filter === "no-notes") matchesFilter = !entry.notes || entry.notes.trim() === "";
+
+      return matchesSearch && matchesFilter;
+    });
+
+    renderEntries(filtered, query !== "" || filter !== "all");
+  }
+
+  function renderEntries(entries, isFiltered) {
+    if (!entriesContainer) return;
+    entriesContainer.textContent = "";
+
+    if (entries.length === 0) {
       const emptyMsg = document.createElement("p");
       emptyMsg.className = "empty-msg";
-      emptyMsg.textContent = "No provenance entries logged yet.";
+      emptyMsg.textContent = isFiltered
+        ? "No matching provenance records found."
+        : "No provenance entries logged yet.";
       entriesContainer.appendChild(emptyMsg);
       return;
     }
@@ -80,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.className = "card entry-card";
 
-      // Header row
       const header = document.createElement("div");
       header.className = "entry-header";
 
@@ -95,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
       header.appendChild(idBadge);
       card.appendChild(header);
 
-      // Meta info (Timestamp & Params)
       const metaDiv = document.createElement("div");
       metaDiv.className = "entry-meta";
 
@@ -114,7 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
       metaDiv.appendChild(paramsP);
       card.appendChild(metaDiv);
 
-      // File Signature (SHA-256)
       const sigP = document.createElement("p");
       sigP.className = "signature";
       const sigLabel = document.createElement("strong");
@@ -125,7 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
       sigP.appendChild(sigCode);
       card.appendChild(sigP);
 
-      // Notes section
       if (entry.notes) {
         const notesP = document.createElement("p");
         notesP.className = "notes";
