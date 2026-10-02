@@ -1,38 +1,39 @@
-import { test } from 'node:test';
-import assert from 'node:assert';
+import test from 'node:test';
+import assert from 'node:assert/strict';
 
-const API = process.env.API || "https://mgt3745-hw4.kcornett533.workers.dev";
+const API_URL = process.env.API;
 
-test('EARS: THE SYSTEM SHALL return all entries in creation order (GET /entries is 200 + array)', async () => {
-  const res = await fetch(`${API}/entries`);
-  assert.strictEqual(res.status, 200);
+if (!API_URL) {
+  throw new Error('API environment variable is required. Example: API=https://your-worker.workers.dev npm test');
+}
+
+test('THE SYSTEM SHALL return all entries in creation order', async () => {
+  const res = await fetch(`${API_URL}/entries`);
+  assert.equal(res.status, 200);
   const data = await res.json();
   assert.ok(Array.isArray(data));
 });
 
-test('EARS: IF the entry text is missing, THEN THE SYSTEM SHALL reject it (POST {} is 400)', async () => {
-  const res = await fetch(`${API}/entries`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({})
-  });
-  assert.strictEqual(res.status, 400);
-});
-
-test('EARS: WHEN a valid entry is submitted, THE SYSTEM SHALL store it (POST then GET shows it)', async () => {
-  const validHash = "a".repeat(64);
+test('WHEN a valid entry is submitted, THE SYSTEM SHALL store it and confirm', async () => {
   const payload = {
-    pipelineName: "HW5 Test Pipeline",
-    executionParams: "--threads 4 --mem 8GB",
-    fileSignature: validHash,
-    notes: "Automated test insertion for HW5 submission"
+    pipelineName: 'Test Pipeline',
+    executionParams: 'batch_size=32',
+    fileSignature: 'a'.repeat(64),
+    notes: 'Unit test submission'
   };
-
-  const res = await fetch(`${API}/entries`, {
+  const res = await fetch(`${API_URL}/entries`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
+  assert.equal(res.status, 201);
+});
 
-  assert.strictEqual(res.status, 201);
+test('IF the entry text is missing, THEN THE SYSTEM SHALL reject it and say why', async () => {
+  const res = await fetch(`${API_URL}/entries`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({})
+  });
+  assert.equal(res.status, 400);
 });
