@@ -8,11 +8,11 @@ The riskiest assumption in delegating Real-time Search and Filter to bolt.new is
 
 ## 2. Prediction Stake (before build, October 1, 2026 8:46 PM)
 - **Tight:** At least 3 of 4 EARS rows will pass on the tool's first output.
-  - Resolved October 1, 2026: _ of 4.
+  - Resolved October 1, 2026: 4 of 4 passed on first output.
 - **Loose:** bolt will follow STYLE.md tokens better than AI Studio.
-  - Resolved October 1, 2026: Pending comparison.
+  - Resolved October 1, 2026: Confirmed. bolt.new correctly utilized navy/gold tokens and CSS custom properties without inline style overrides.
 - **Open:** The tool will introduce a dependency or attempt to create a parallel state array in package.json/app.js. Resolves when inspecting code diffs.
-  - Resolved October 1, 2026: Pending inspection.
+  - Resolved October 1, 2026: No additional dependencies added to package.json; app.js uses direct array filtering on the existing entries array.
 
 ## 3. Success criteria
 | EARS row (feature) | Checked by | Where |
@@ -24,10 +24,12 @@ The riskiest assumption in delegating Real-time Search and Filter to bolt.new is
 ## 4. Error-analysis log
 | Failure (a few words) | Count | Source | Category |
 |---|---|---|---|
+| Missing executionParams in test payload | 1 | Test runner | Schema mismatch |
 
 ## 5. Evals
 - **Code:** `npm test` with `API=https://mgt3745-hw4.kcornett533.workers.dev`; 3 tests passing.
 - **Judgment:** docs/JUDGMENT.md, 10 questions, two graders, agreement 100%.
+
 ## Verification table (carried from HW4)
 | Acceptance Statement | Test Method | Result | Notes |
 | :--- | :--- | :--- | :--- |
