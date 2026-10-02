@@ -5,7 +5,7 @@ Copy in from HW3; the HW4 rows are added for you.
 
 ## Rules
 
-1. *Your HW3 rules, five minimum.*
+1. Validate all form inputs on the client side before triggering network requests or state changes.
 2. Separation of concerns: HTML for structure, CSS for presentation, JS for behavior and data.
 3. User input reaches the page through `textContent`, never `innerHTML`.
 4. **(HW4)** User values reach SQL through `bind()`, never string concatenation.
@@ -15,8 +15,13 @@ Copy in from HW3; the HW4 rows are added for you.
 
 ## Naming
 
-*camelCase for JS, kebab-case for files, ...*
+* **JavaScript:** `camelCase` for variable names, function names, and DOM object references; `PascalCase` for classes or constructors.
+* **Files & Directories:** `kebab-case` for file names and folder paths (e.g., `worker.test.js`, `bolt-001.zip`).
+* **CSS:** `kebab-case` for class names and ID attributes (`#searchInput`, `#filterSelect`, `.provenance-card`).
+* **Database & SQL:** `snake_case` for database table names and column identifiers (`provenance_entries`, `file_signature`).
 
 ## Documentation
 
-*Inline comments explain why, never what. README stays current with each tag.*
+* **Inline Comments:** Comments explain *why* a design or algorithmic decision was made, never *what* the code does (the code itself must be self-explanatory).
+* **API Documentation:** Every endpoint comment must explicitly quote the corresponding EARS acceptance criteria statement from `FEATURES.md`.
+* **Repository Documentation:** `README.md` and context scaffold files (`PROJECT.md`, `EVALS.md`, `ARCHITECTURE.md`) remain continuously updated with every release tag and git commit.
