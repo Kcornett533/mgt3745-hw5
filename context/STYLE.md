@@ -1,5 +1,4 @@
-# Tokens: what a machine reads. Replace every value with one pulled from the
-# interface you admire. Guess the hex; precision is HW5's problem.
+---
 color-primary: "#051E39"
 color-accent: "#B39051"
 color-background: "#FFFFFF"
@@ -21,9 +20,13 @@ body is what a human reads. One sentence per token. "Looks clean" is fog;
 
 - **color-primary**: Deep navy (`#051E39`) establishes high-contrast authoritative framing for header regions and interactive elements without inducing screen fatigue.
 - **color-accent**: Metallic gold (`#B39051`) is reserved strictly for active state highlights and focal borders, but forbidden on small body text to pass WCAG AA contrast standards.
-- **font-body / font-heading**: Combining a geometric sans-serif for body copy with a clean slab-serif for structural headings maintains dense data legibility while clearly demarcating typographic hierarchy.
-- **space-unit**: An 8px spatial grid enforces predictable layout rhythm across card padding, grid margins, and component gaps so element spacing is never eyeballed.
-- **font-size-min**: Setting a 14px floor guarantees readable metadata and technical log signatures for users viewing dense records on smaller desktop displays or high-DPI laptop monitors.
+- **color-background**: Pure white (`#FFFFFF`) provides a neutral, high-clarity backdrop for structured provenance data cards.
+- **color-text**: Off-black (`#1A1A1A`) provides maximum legibility while avoiding the harsh visual vibration of pure black against pure white backgrounds.
+- **font-body**: Roboto ensures high-density technical log legibility across diverse screen resolutions.
+- **font-heading**: Roboto Slab creates a distinct visual hierarchy for structural section headers without cluttering record cards.
+- **font-size-min**: Setting a 14px floor guarantees readable metadata and technical log signatures on high-DPI displays.
+- **space-unit**: An 8px spatial grid enforces predictable layout rhythm across card padding, grid margins, and component gaps.
+- **radius**: A subtle 4px border radius softens container edges while preserving a sharp, technical enterprise layout.
 
 ## Refusals
 
@@ -36,5 +39,5 @@ resent. Name the Law of UX it breaks (lawsofux.com).
 
 ## Sources
 
-- Admired: Stripe Dashboard / GitHub Interface, focused density and clear tabular hierarchy.
-- Resented: Legacy Enterprise Portals, overcrowded layout shifts, hidden filters, and low-contrast metadata text.
+- Admired: Stripe Dashboard / GitHub Interface (focused density and clear tabular hierarchy).
+- Resented: Legacy Enterprise Portals (overcrowded layout shifts, hidden filters, and low-contrast metadata text).
