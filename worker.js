@@ -2,7 +2,6 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // CORS headers
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -33,10 +32,16 @@ export default {
 
       if (request.method === "POST") {
         try {
-          const body = await request.json();
-          const { pipelineName, executionParams, fileSignature, notes } = body;
+          let body = {};
+          try {
+            body = await request.json();
+          } catch (e) {
+            body = {};
+          }
 
-          // Validate required fields
+          const { pipelineName, executionParams, fileSignature, notes, manifestId } = body;
+
+          // Reject if required fields are missing
           if (!pipelineName || !executionParams || !fileSignature) {
             return new Response(
               JSON.stringify({ error: "Missing required fields" }),
@@ -48,17 +53,20 @@ export default {
           const hex64Regex = /^[a-fA-F0-9]{64}$/;
           if (!hex64Regex.test(fileSignature)) {
             return new Response(
-              JSON.stringify({ error: "fileSignature must be a 64-char hex string" }),
+              JSON.stringify({ error: "fileSignature must be a 64-character hex string" }),
               { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
 
+          // Provide fallback for manifest_id if not supplied
+          const manifest_id = manifestId || body.manifest_id || `manifest-${Date.now()}`;
+
           const query = `
-            INSERT INTO entries (pipelineName, executionParams, fileSignature, notes)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO entries (manifest_id, pipeline_name, execution_params, file_signature, notes)
+            VALUES (?, ?, ?, ?, ?)
           `;
           await env.DB.prepare(query)
-            .bind(pipelineName, executionParams, fileSignature, notes || "")
+            .bind(manifest_id, pipelineName, executionParams, fileSignature, notes || "N/A")
             .run();
 
           return new Response(
@@ -68,7 +76,7 @@ export default {
         } catch (err) {
           return new Response(
             JSON.stringify({ error: err.message }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
           );
         }
       }

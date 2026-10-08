@@ -14,6 +14,12 @@ A real-time search interface filtering records dynamically as the user types wit
 
 ![See it work](docs/demo.png)
 
+## Test Verification
+
+All worker evaluation and unit tests pass against the live Cloudflare deployment:
+
+![Passing Tests](docs/test-passing.png)
+
 ```mermaid
 flowchart LR
     A[Page loads] --> B[GET /entries]
