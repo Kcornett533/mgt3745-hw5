@@ -24,3 +24,25 @@ flowchart LR
     H -->|201 Created| B
     H -->|400 Bad Request| I[Display UI error message]
     B -->|Network failure| I
+    
+## Status
+* **Build & Test Status**: Operational & Passing
+* **Cloudflare Worker API**: Deployed to Production
+* **Cloudflare D1 Database**: Binding Active (`mgt3745-entries`, UUID: `37d3c2e6-8305-4e69-b34f-d582ffb1da4f`)
+* **Security & DOM Handling**: Fully remediated (`innerHTML` usage eliminated; using safe `textContent` / DOM creation methods)
+
+## Delegation
+* **Human Effort**: Architecture & system specifications, D1 database binding & schema setup, Cloudflare API permission scoping, security auditing (`innerHTML` remediation), manual verification, automated test setup, and documentation.
+* **AI Assistance (bolt.new)**: Generating initial client-side search UI component, Worker boilerplate endpoints, and initial test file structure.
+
+## Links
+* **GitHub Repository**: [https://github.com/Kcornett533/mgt3745-hw5](https://github.com/Kcornett533/mgt3745-hw5)
+* **HW4 GitHub Repository**: [https://github.com/Kcornett533/mgt3745-hw4](https://github.com/Kcornett533/mgt3745-hw4)
+* **Live Cloudflare Worker**: [https://mgt3745-hw5.kamyaab-cornett1.workers.dev](https://mgt3745-hw5.kamyaab-cornett1.workers.dev)
+
+## Hours
+* **Total Time Spent**: ~6.5 Hours
+  * *Architecture, D1 Schema & Cloudflare Binding Setup*: 2.0 hrs
+  * *Code Refactoring & Security Hardening*: 1.5 hrs
+  * *Automated Testing & Edge Debugging*: 1.5 hrs
+  * *Documentation & Asset Preparation*: 1.5 hrs
